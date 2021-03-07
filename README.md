@@ -1,6 +1,6 @@
-# connection
+### Connection
 
-A new Flutter project.
+A new and secureway to do communication.
 
 ## Getting Started
 
