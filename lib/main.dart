@@ -1,6 +1,6 @@
+import 'package:connection/screens/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,42 +28,22 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image(
-            image: new AssetImage("lib/assets/logo_trans.png"),
-            fit: BoxFit.cover,
-            height: 300,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 50, right: 50),
-            child: Column(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Mobile Number'),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-                // InternationalPhoneNumberInput(
-                //   // onInputChanged: ,
-                //   inputDecoration: InputDecoration(hintText: "Mobile NUmber"),
-                // ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: OutlineButton(
-                    onPressed: () {},
-                    child: Text("Send OTP"),
-                    hoverColor: Colors.blueAccent[400],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return ListView(
+      // mainAxisAlignment:MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.15,
+              left: 25,
+              right: 25),
+        ),
+        LoginView(),
+
+        // Padding(
+        //   padding: EdgeInsets.only(left: 25, right: 25),
+        //   child: LoginView(),
+        // )
+      ],
     );
   }
 }
