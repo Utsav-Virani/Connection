@@ -1,8 +1,14 @@
-import 'package:connection/screens/LoginView.dart';
+import 'package:connection/screens/SignInView.dart';
+import 'package:connection/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,36 +20,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       home: Scaffold(
-        body: HomeView(),
+        body: Authenticate(),
       ),
-    );
-  }
-}
-
-class HomeView extends StatefulWidget {
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      // mainAxisAlignment:MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.15,
-              left: 25,
-              right: 25),
-        ),
-        LoginView(),
-
-        // Padding(
-        //   padding: EdgeInsets.only(left: 25, right: 25),
-        //   child: LoginView(),
-        // )
-      ],
     );
   }
 }
