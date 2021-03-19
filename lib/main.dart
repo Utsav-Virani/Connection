@@ -1,4 +1,6 @@
+import 'package:connection/screens/HomeView.dart';
 import 'package:connection/widgets/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +20,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
       ),
-      home: Authenticate(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, userSnapsort) {
+          if (userSnapsort.hasData) {
+            return HomeView();
+          } else {
+            return Authenticate();
+          }
+        },
+      ),
     );
   }
 }

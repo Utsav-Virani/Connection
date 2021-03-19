@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/database.dart';
 import 'package:connection/widgets/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -35,6 +34,8 @@ class _SearchState extends State<Search> {
             })
         : Container();
   }
+
+  createChatRoomForUser() {}
 
   @override
   void initState() {
@@ -130,11 +131,116 @@ class SearchResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Row(
-        children: [
-          Text(name),
-          Text(email),
-        ],
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        height: 80,
+        // color: Color(0xFFD6EAF8),
+        decoration: BoxDecoration(
+          color: Color(0xFFEBF5FB),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF000000).withOpacity(0.1),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(
+                4.0,
+                4.0,
+              ),
+            ),
+          ],
+          borderRadius: BorderRadius.all(
+            // topLeft:
+            Radius.circular(40),
+            // topRight: Radius.circular(50),
+            // bottomLeft: Radius.circular(50),
+            // bottomRight: Radius.circular(50),
+          ),
+        ),
+        child: ListTile(
+          title: Text(name),
+          leading: CircleAvatar(
+            child: Text(name[0]),
+            maxRadius: 24,
+          ),
+          subtitle: Text(email),
+          trailing: Padding(
+            padding: EdgeInsets.only(top: 0),
+            child: GestureDetector(
+              onTap: () {
+                // createChatRoomForUser();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFCCBC),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF000000).withOpacity(0.1),
+                      blurRadius: 5.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        4.0,
+                        4.0,
+                      ),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Text("Message"),
+              ),
+            ),
+          ),
+          // children: [
+          //   Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         padding: EdgeInsets.only(left: 15),
+          //         // decoration: BoxDecoration(
+          //         //   border: Border(
+          //         //     bottom: BorderSide(color: Colors.grey, width: 1),
+          //         //   ),
+          //         // ),
+          //         child: Text(name),
+          //       ),
+          //       SizedBox(
+          //         height: 5,
+          //       ),
+          //       Container(
+          //         padding: EdgeInsets.only(left: 15),
+          //         child: Text(email),
+          //       ),
+          //     ],
+          //   ),
+          //   Spacer(),
+          //   GestureDetector(
+          //     onTap: () {
+          //       // createChatRoomForUser();
+          //     },
+          //     child: Container(
+          //       decoration: BoxDecoration(
+          //         color: Color(0xFFFFCCBC),
+          //         borderRadius: BorderRadius.all(Radius.circular(30)),
+          //         boxShadow: [
+          //           BoxShadow(
+          //             color: Color(0xFF000000).withOpacity(0.1),
+          //             blurRadius: 5.0,
+          //             spreadRadius: 0.5,
+          //             offset: Offset(
+          //               4.0,
+          //               4.0,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          //       child: Text("Message"),
+          //     ),
+          //   ),
+          // ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:connection/config/auth.dart';
 import 'package:connection/screens/HomeView.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:connection/config/database.dart';
@@ -25,7 +26,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  userSignUp() {
+  userSignUp() async {
     if (_formKey.currentState.validate()) {
       Map<String, String> userData = {
         "name": _userNameController.text,
@@ -36,9 +37,9 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
 
-      _authMethod
-          .signUpWithEmail(_emailController.text, _passwordController.text)
-          .then((value) {
+      try {
+        final authResult = await _authMethod.signUpWithEmail(
+            _emailController.text, _passwordController.text);
         databaseMethods.uploadUserInfo(userData);
         Navigator.pushReplacement(
           context,
@@ -46,7 +47,17 @@ class _SignUpState extends State<SignUp> {
             builder: (context) => HomeView(),
           ),
         );
-      });
+      } on FirebaseAuthException catch (e) {
+        var errorMsg = "Invalid Credentials. Please enter valid information.";
+        if (e.message != null) {
+          errorMsg = e.message;
+        }
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(errorMsg)));
+      }
     }
   }
 
