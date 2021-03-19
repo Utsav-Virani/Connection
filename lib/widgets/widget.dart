@@ -1,17 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:connection/screens/SignInView.dart';
-import 'package:connection/screens/SignUpView.dart';
 import 'package:connection/config/auth.dart';
+import 'package:connection/screens/SignInScreen.dart';
+import 'package:connection/screens/SignUpScreen.dart';
+import 'package:flutter/material.dart';
 
-Widget appBar(BuildContext context){
+Widget appBar(BuildContext context) {
   return AppBar(
-    title:  Text("Connection"),
+    // backgroundColor: Colors.amber,
+    backgroundColor: Color(0xff1E90FF),
+    title: Center(
+      child: Image(
+        image: new AssetImage("lib/assets/connection_text.png"),
+        // fit: BoxFit.cover,
+        height: 200,
+      ),
+    ),
+    elevation: 0.0,
     actions: [
       GestureDetector(
         onTap: () {
-          // AuthMethods().signOut();
-          // Navigator.pushReplacement(context,
-          //     MaterialPageRoute(builder: (context) => Authenticate()));
+          AuthMethods().signOut();
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Authenticate()));
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -20,6 +29,31 @@ Widget appBar(BuildContext context){
     ],
   );
 }
+
+
+Widget SearchScreenAppBar(BuildContext context) {
+  return AppBar(
+    // backgroundColor: Colors.amber,
+    backgroundColor: Color(0xff1E90FF),
+    title: Center(
+      child: Image(
+        image: new AssetImage("lib/assets/connection_text.png"),
+        // fit: BoxFit.cover,
+        height: 200,
+      ),
+    ),
+    elevation: 0.0,
+    actions: [
+      GestureDetector(
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 28),
+            // child: Icon(Icons.exit_to_app)
+        ),
+      )
+    ],
+  );
+}
+
 
 class Authenticate extends StatefulWidget {
   @override
