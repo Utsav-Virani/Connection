@@ -1,4 +1,5 @@
 import 'package:connection/config/auth.dart';
+import 'package:connection/data/dataCollection.dart';
 import 'package:connection/screens/HomeView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,11 @@ class _SignUpState extends State<SignUp> {
         final authResult = await _authMethod.signUpWithEmail(
             _emailController.text, _passwordController.text);
         databaseMethods.uploadUserInfo(userData);
+
+        DataStorage.setUserSignInPreference(true);
+        DataStorage.setUserEmailPreference(_emailController.text);
+        DataStorage.setUserNamePreference(_userNameController.text);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -133,6 +139,7 @@ class _SignUpState extends State<SignUp> {
                               child: TextFormField(
                                 obscureText: true,
                                 controller: _passwordController,
+                                enableSuggestions: false,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   hintText: 'Password:',

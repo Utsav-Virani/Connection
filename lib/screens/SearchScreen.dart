@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/database.dart';
+import 'package:connection/data/dataCollection.dart';
+import 'package:connection/data/userData.dart';
+import 'package:connection/screens/ChatRoom.dart';
 import 'package:connection/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +10,8 @@ class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
+
+String _myUserName;
 
 class _SearchState extends State<Search> {
   TextEditingController searchTextController = new TextEditingController();
@@ -35,12 +40,118 @@ class _SearchState extends State<Search> {
         : Container();
   }
 
-  createChatRoomForUser() {}
+  getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
+
+  createChatRoomForUser({String userName}) {
+    // print("-----");
+    // print(userName);
+    // print(_myUserName);
+
+    if (userName != _myUserName) {
+      String _charRoomId = getChatRoomId(userName, _myUserName);
+      List<String> users = [userName, _myUserName];
+      Map<String, dynamic> _chatRoomMap = {
+        "users": users,
+        "chatRoomId": _charRoomId
+      };
+      DataBaseMethods().addChatRoom(_charRoomId, _chatRoomMap);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatRoomScreen(chatRoomId: _charRoomId),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("You can not send message to your self.")));
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
+    getUserInfo();
     super.initState();
+  }
+
+  getUserInfo() async {
+    _myUserName = await DataStorage.getUserNamePreference();
+    UserData.myUserName = await DataStorage.getUserNamePreference();
+    setState(() {});
+  }
+
+  Widget SearchResultCard({String name, final String email}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        height: 80,
+        // color: Color(0xFFD6EAF8),
+        decoration: BoxDecoration(
+          color: Color(0xFFEBF5FB),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF000000).withOpacity(0.1),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(
+                4.0,
+                4.0,
+              ),
+            ),
+          ],
+          borderRadius: BorderRadius.all(
+            // topLeft:
+            Radius.circular(40),
+            // topRight: Radius.circular(50),
+            // bottomLeft: Radius.circular(50),
+            // bottomRight: Radius.circular(50),
+          ),
+        ),
+        child: ListTile(
+          title: Text(name),
+          leading: CircleAvatar(
+            child: Text(name[0]),
+            maxRadius: 24,
+          ),
+          subtitle: Text(email),
+          trailing: Padding(
+            padding: EdgeInsets.only(top: 0),
+            child: GestureDetector(
+              onTap: () {
+                // print(name);
+                createChatRoomForUser(userName: name);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFCCBC),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF000000).withOpacity(0.1),
+                      blurRadius: 5.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(
+                        4.0,
+                        4.0,
+                      ),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Text("Message"),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -122,126 +233,12 @@ class _SearchState extends State<Search> {
   }
 }
 
-class SearchResultCard extends StatelessWidget {
-  final String name;
-  final String email;
 
-  SearchResultCard({this.name, this.email});
+// class SearchResultCard extends StatelessWidget {
+//   final ;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-        height: 80,
-        // color: Color(0xFFD6EAF8),
-        decoration: BoxDecoration(
-          color: Color(0xFFEBF5FB),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF000000).withOpacity(0.1),
-              blurRadius: 5.0,
-              spreadRadius: 1.0,
-              offset: Offset(
-                4.0,
-                4.0,
-              ),
-            ),
-          ],
-          borderRadius: BorderRadius.all(
-            // topLeft:
-            Radius.circular(40),
-            // topRight: Radius.circular(50),
-            // bottomLeft: Radius.circular(50),
-            // bottomRight: Radius.circular(50),
-          ),
-        ),
-        child: ListTile(
-          title: Text(name),
-          leading: CircleAvatar(
-            child: Text(name[0]),
-            maxRadius: 24,
-          ),
-          subtitle: Text(email),
-          trailing: Padding(
-            padding: EdgeInsets.only(top: 0),
-            child: GestureDetector(
-              onTap: () {
-                // createChatRoomForUser();
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFFFCCBC),
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xFF000000).withOpacity(0.1),
-                      blurRadius: 5.0,
-                      spreadRadius: 0.5,
-                      offset: Offset(
-                        4.0,
-                        4.0,
-                      ),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text("Message"),
-              ),
-            ),
-          ),
-          // children: [
-          //   Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Container(
-          //         padding: EdgeInsets.only(left: 15),
-          //         // decoration: BoxDecoration(
-          //         //   border: Border(
-          //         //     bottom: BorderSide(color: Colors.grey, width: 1),
-          //         //   ),
-          //         // ),
-          //         child: Text(name),
-          //       ),
-          //       SizedBox(
-          //         height: 5,
-          //       ),
-          //       Container(
-          //         padding: EdgeInsets.only(left: 15),
-          //         child: Text(email),
-          //       ),
-          //     ],
-          //   ),
-          //   Spacer(),
-          //   GestureDetector(
-          //     onTap: () {
-          //       // createChatRoomForUser();
-          //     },
-          //     child: Container(
-          //       decoration: BoxDecoration(
-          //         color: Color(0xFFFFCCBC),
-          //         borderRadius: BorderRadius.all(Radius.circular(30)),
-          //         boxShadow: [
-          //           BoxShadow(
-          //             color: Color(0xFF000000).withOpacity(0.1),
-          //             blurRadius: 5.0,
-          //             spreadRadius: 0.5,
-          //             offset: Offset(
-          //               4.0,
-          //               4.0,
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          //       child: Text("Message"),
-          //     ),
-          //   ),
-          // ],
-        ),
-      ),
-    );
-  }
-}
+//   SearchResultCard({this.name, this.email});
+
+//   @override
+//   Widget build(BuildContext context) {}
+// }

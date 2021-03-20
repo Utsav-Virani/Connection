@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/auth.dart';
+import 'package:connection/config/database.dart';
+import 'package:connection/data/dataCollection.dart';
 import 'package:connection/screens/HomeView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +20,18 @@ class _SignInState extends State<SignIn> {
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
+  QuerySnapshot userInfo;
 
   AuthMethods _authMethod = AuthMethods();
+  DataBaseMethods databaseMethods = new DataBaseMethods();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   userSignUp() async {
     if (_formKey.currentState.validate()) {
+      // DataStorage.setUserNamePreference(_userNameController.text);
+
       setState(() {
         isLoading = true;
       });
@@ -32,6 +39,17 @@ class _SignInState extends State<SignIn> {
       try {
         final authResult = await _authMethod.signInWithEmail(
             _emailController.text, _passwordController.text);
+
+        DataStorage.setUserEmailPreference(_emailController.text);
+
+        databaseMethods
+            .getUserNameByUserEmail(_emailController.text)
+            .then((value) {
+          userInfo = value;
+          DataStorage.setUserNamePreference(userInfo.docs[0].data()['name']);
+        });
+
+        DataStorage.setUserSignInPreference(true);
 
         Navigator.pushReplacement(
           context,
@@ -107,6 +125,7 @@ class _SignInState extends State<SignIn> {
                               child: TextFormField(
                                 obscureText: true,
                                 controller: _passwordController,
+                                enableSuggestions: false,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                   hintText: 'Password:',
