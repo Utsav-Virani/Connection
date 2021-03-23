@@ -29,6 +29,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           );
         }
         return ListView.builder(
+          reverse: true,
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
             // print(snapshot.data.docs[index].data()["sentBy"]);
@@ -79,17 +80,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       body: Container(
         child: Stack(
           children: [
-            ChatMessageList(),
+            Container(
+              margin: EdgeInsets.only(bottom: 80),
+              child: ChatMessageList(),
+            ),
             Container(
               alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              margin: EdgeInsets.only(bottom: 5),
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xFFE3F2FD),
                     // color: Color(0xFFEBF5FB),
                     border: Border(
-                      top: BorderSide(width: 2, color: Colors.grey),
-                    )),
+                        // top: BorderSide(width: 2, color: Colors.grey),
+                        )),
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: [

@@ -39,6 +39,11 @@ class _HomeViewState extends State<HomeView> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
+                  // print(snapshot.data.docs[index]
+                  //     .data()["chatRoomId"]
+                  //     .toString()
+                  //     .replaceAll("_", ""));
+                  // print("----> " + _myUserName);
                   return ChatRoomListTile(
                       snapshot.data.docs[index]
                           .data()["chatRoomId"]
@@ -64,7 +69,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: Center(child: Text(_myUserName)),
+      ),
       backgroundColor: Color(0xff1E90FF),
       appBar: appBar(context),
       floatingActionButton: FloatingActionButton(
@@ -131,14 +138,11 @@ class ChatRoomListTile extends StatelessWidget {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 70,
-        // alignment: _isSendBAlignment.centerRight : Alignment.centerLeft,
+        height: 80,
         child: Container(
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 13),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
             boxShadow: [
               BoxShadow(
                 color: Color(0xFF000000).withOpacity(0.1),
@@ -155,13 +159,50 @@ class ChatRoomListTile extends StatelessWidget {
               Color(0xFFccdae4),
             ]),
           ),
-          child: Container(
-            child: Text(
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Text(
+                _userName[0],
+                style: TextStyle(fontSize: 24),
+              ),
+              maxRadius: 26,
+            ),
+            title: Text(
               _userName,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 18),
             ),
           ),
         ),
+        // alignment: _isSendBAlignment.centerRight : Alignment.centerLeft,
+        // child: Container(
+        //   alignment: Alignment.centerLeft,
+        //   margin: EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+        //   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.all(Radius.circular(40)),
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: Color(0xFF000000).withOpacity(0.1),
+        //         blurRadius: 5.0,
+        //         spreadRadius: 1.0,
+        //         offset: Offset(
+        //           4.0,
+        //           4.0,
+        //         ),
+        //       ),
+        //     ],
+        //     gradient: LinearGradient(colors: [
+        //       Color(0xFFE3F2FD),
+        //       Color(0xFFccdae4),
+        //     ]),
+        //   ),
+        //   child: Container(
+        //     child: Text(
+        //       _userName,
+        //       style: TextStyle(fontSize: 16),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

@@ -15,8 +15,8 @@ class DataBaseMethods {
         .get();
   }
 
-  uploadUserInfo(userData) {
-    FirebaseFirestore.instance.collection("UserData").add(userData);
+  uploadUserInfo(userData, userId) {
+    FirebaseFirestore.instance.collection("UserData").doc(userId).set(userData);
   }
 
   addChatRoom(_chatRoomId, _chatRoom) {
@@ -45,7 +45,7 @@ class DataBaseMethods {
         .collection("chatRoom")
         .doc(_chatRoomId)
         .collection("Chats")
-        .orderBy("time", descending: false)
+        .orderBy("time", descending: true)
         .snapshots();
   }
 

@@ -28,6 +28,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _passwordController = TextEditingController();
 
   userSignUp() async {
+    final _auth = FirebaseAuth.instance;
+
     if (_formKey.currentState.validate()) {
       Map<String, String> userData = {
         "name": _userNameController.text,
@@ -39,9 +41,18 @@ class _SignUpState extends State<SignUp> {
       });
 
       try {
-        final authResult = await _authMethod.signUpWithEmail(
-            _emailController.text, _passwordController.text);
-        databaseMethods.uploadUserInfo(userData);
+        // User authResult = await _authMethod.signUpWithEmail(
+        // _emailController.text, .text);
+        // print("-----");
+        // print(authResult.uid);
+        // print("-----");
+
+        UserCredential _userCredential =
+            await _auth.createUserWithEmailAndPassword(
+                email: _emailController.text,
+                password: _passwordController.text);
+
+        databaseMethods.uploadUserInfo(userData, _userCredential.user.uid);
 
         DataStorage.setUserSignInPreference(true);
         DataStorage.setUserEmailPreference(_emailController.text);
@@ -86,10 +97,12 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image(
-                        image: new AssetImage("lib/assets/logo_trans.png"),
-                        fit: BoxFit.cover,
-                        height: 300,
+                      Center(
+                        child: Image(
+                          image: new AssetImage("lib/assets/logo_trans.png"),
+                          fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.width * 0.7,
+                        ),
                       ),
                       // SizedBox(height: 10,),
                       Form(
@@ -97,6 +110,7 @@ class _SignUpState extends State<SignUp> {
                         child: Column(
                           children: [
                             SizedBox(
+                              height: 60,
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: TextFormField(
                                 validator: (value) {
@@ -111,10 +125,11 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                             ),
+                            // SizedBox(
+                            //   height: 20,
+                            // ),
                             SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
+                              height: 60,
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: TextFormField(
                                 validator: (val) {
@@ -132,9 +147,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
+                              height: 60,
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: TextFormField(
                                 obscureText: true,
@@ -155,46 +168,44 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 30,
                       ),
                       GestureDetector(
                         onTap: () {
                           userSignUp();
                         },
-                        child: SizedBox(
-                          child: Container(
-                            // onPressed: _saveForm,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15,
-                            ),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xff2A75BC).withOpacity(0.2),
-                                  blurRadius: 5.0,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(
-                                    4.0,
-                                    4.0,
-                                  ),
+                        child: Container(
+                          // onPressed: _saveForm,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15,
+                          ),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xff2A75BC).withOpacity(0.2),
+                                blurRadius: 5.0,
+                                spreadRadius: 1.0,
+                                offset: Offset(
+                                  4.0,
+                                  4.0,
                                 ),
+                              ),
+                            ],
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xff007EF4),
+                                const Color(0xff2A75BC),
                               ],
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xff007EF4),
-                                  const Color(0xff2A75BC),
-                                ],
-                              ),
                             ),
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
+                          ),
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -223,6 +234,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ],
                       ),
+                      // Expanded(child: Container())
                     ],
                   ),
                 ),

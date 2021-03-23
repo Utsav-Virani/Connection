@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/auth.dart';
 import 'package:connection/config/database.dart';
 import 'package:connection/data/dataCollection.dart';
+import 'package:connection/modal/userData.dart';
 import 'package:connection/screens/HomeView.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _passwordController = TextEditingController();
 
   userSignUp() async {
+    final _auth = FirebaseAuth.instance;
     if (_formKey.currentState.validate()) {
       // DataStorage.setUserNamePreference(_userNameController.text);
 
@@ -37,8 +39,10 @@ class _SignInState extends State<SignIn> {
       });
 
       try {
-        final authResult = await _authMethod.signInWithEmail(
-            _emailController.text, _passwordController.text);
+        // final authResult = await _authMethod.signInWithEmail(
+        //     _emailController.text, _passwordController.text);
+        UserCredential _userCredential = await _auth.signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
 
         DataStorage.setUserEmailPreference(_emailController.text);
 
@@ -48,6 +52,8 @@ class _SignInState extends State<SignIn> {
           userInfo = value;
           DataStorage.setUserNamePreference(userInfo.docs[0].data()['name']);
         });
+
+        // print(UserData().userId);
 
         DataStorage.setUserSignInPreference(true);
 
@@ -147,40 +153,38 @@ class _SignInState extends State<SignIn> {
                         onTap: () {
                           userSignUp();
                         },
-                        child: SizedBox(
-                          child: Container(
-                            // onPressed: _saveForm,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15,
-                            ),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xff2A75BC).withOpacity(0.2),
-                                  blurRadius: 5.0,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(
-                                    4.0,
-                                    4.0,
-                                  ),
+                        child: Container(
+                          // onPressed: _saveForm,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15,
+                          ),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xff2A75BC).withOpacity(0.2),
+                                blurRadius: 5.0,
+                                spreadRadius: 1.0,
+                                offset: Offset(
+                                  4.0,
+                                  4.0,
                                 ),
+                              ),
+                            ],
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xff007EF4),
+                                const Color(0xff2A75BC),
                               ],
-                              gradient: LinearGradient(
-                                colors: [
-                                  const Color(0xff007EF4),
-                                  const Color(0xff2A75BC),
-                                ],
-                              ),
                             ),
-                            child: Text(
-                              "Sign In",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
+                          ),
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
                             ),
                           ),
                         ),
