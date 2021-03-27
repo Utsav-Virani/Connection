@@ -1,4 +1,5 @@
 import 'package:connection/config/auth.dart';
+import 'package:connection/screens/Authentication/Authentication.dart';
 import 'package:connection/screens/SignInScreen.dart';
 import 'package:connection/screens/SignUpScreen.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,8 @@ Widget appBar(BuildContext context) {
       GestureDetector(
         onTap: () {
           AuthMethods().signOut();
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Authenticate()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => Authentication()));
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -29,7 +30,6 @@ Widget appBar(BuildContext context) {
     ],
   );
 }
-
 
 Widget SearchScreenAppBar(BuildContext context) {
   return AppBar(
@@ -46,14 +46,13 @@ Widget SearchScreenAppBar(BuildContext context) {
     actions: [
       GestureDetector(
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 28),
-            // child: Icon(Icons.exit_to_app)
+          padding: EdgeInsets.symmetric(horizontal: 28),
+          // child: Icon(Icons.exit_to_app)
         ),
       )
     ],
   );
 }
-
 
 class Authenticate extends StatefulWidget {
   @override

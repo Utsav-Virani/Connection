@@ -33,6 +33,7 @@ dependencies:
   firebase_core: ^1.0.0
   flutter_svg: ^0.19.3
   shared_preferences: ^2.0.5
+  pinput: ^1.2.0
 
 
 dev_dependencies:

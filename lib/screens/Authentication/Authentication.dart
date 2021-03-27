@@ -1,5 +1,6 @@
 import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/modal/CountrySelecter.dart';
+import 'package:connection/screens/Authentication/OTPScreen.dart';
 import 'package:flutter/material.dart';
 
 class Authentication extends StatefulWidget {
@@ -8,9 +9,19 @@ class Authentication extends StatefulWidget {
 }
 
 class _AuthenticationState extends State<Authentication> {
-  TextEditingController _countryNameController = new TextEditingController();
+  TextEditingController _countryNameController =
+      new TextEditingController(text: "India");
   TextEditingController _phoneNumberController = new TextEditingController();
-  TextEditingController _phoneCodeController = new TextEditingController();
+  TextEditingController _phoneCodeController =
+      new TextEditingController(text: "+91");
+
+  @override
+  void dispose() {
+    _countryNameController.dispose();
+    _phoneCodeController.dispose();
+    _phoneNumberController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +74,24 @@ class _AuthenticationState extends State<Authentication> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width * 0.4,
-                      child: GestureDetector(
+                      child: TextFormField(
+                        readOnly: true,
                         onTap: () async {
-                          final selectedCountryData = await Navigator.push(
+                          final dynamic selectedCountryData =
+                              await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CountrySelecter()),
                           );
+                          _countryNameController.text =
+                              selectedCountryData['name'];
+                          _phoneCodeController.text =
+                              selectedCountryData['code'];
                         },
-                        child: TextFormField(
-                          textAlign: TextAlign.center,
-                          enabled: false,
-                          controller: _countryNameController,
-                          decoration: InputDecoration(hintText: "India"),
-                        ),
+                        textAlign: TextAlign.center,
+                        // enabled: false,
+                        controller: _countryNameController,
+                        // decoration: InputDecoration(),
                       ),
                     ),
                     Form(
@@ -91,10 +106,10 @@ class _AuthenticationState extends State<Authentication> {
                               textAlign: TextAlign.center,
                               enabled: false,
                               controller: _phoneCodeController,
-                              cursorColor: ColorPalette['swatch 15'],
+                              cursorColor: ColorPalette['swatch_15'],
                               decoration: InputDecoration(
                                 hintText: "+91",
-                                fillColor: ColorPalette['swatch 15'],
+                                fillColor: ColorPalette['swatch_15'],
                               ),
                             ),
                           ),
@@ -104,12 +119,11 @@ class _AuthenticationState extends State<Authentication> {
                               controller: _phoneNumberController,
                               decoration: InputDecoration(
                                 hintText: "Mobile Number",
-                                hintStyle: TextStyle(
-                                  color: ColorPalette['swatch 15']
-                                ),
-                                focusColor: ColorPalette['swatch 15'],
-                                hoverColor: ColorPalette['swatch 15'],
-                                fillColor: ColorPalette['swatch 15'],
+                                hintStyle:
+                                    TextStyle(color: ColorPalette['swatch_15']),
+                                focusColor: ColorPalette['swatch_15'],
+                                hoverColor: ColorPalette['swatch_15'],
+                                fillColor: ColorPalette['swatch_15'],
                               ),
                             ),
                           ),
@@ -120,17 +134,29 @@ class _AuthenticationState extends State<Authentication> {
                       width: 160,
                       padding: EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: ColorPalette['swatch 6'],
+                        color: ColorPalette['swatch_6'],
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
                       ),
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OtpScreen(
+                                    _phoneCodeController.text +
+                                        _phoneNumberController.text)),
+                          );
+                        },
                         child: Container(
                           child: Text(
                             "Send OTP",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/data/countryCodes.dart';
 import 'package:flutter/material.dart';
 
@@ -19,39 +20,53 @@ class _CountrySelecterState extends State<CountrySelecter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      // backgroundColor: Colors.amber,
+      appBar: AppBar(
+        // foregroundColor: ColorPalette['swatch_14'],
+        backgroundColor: ColorPalette['swatch_4'],
+        elevation: 10,
+      ),
       body: Container(
         margin: EdgeInsets.only(top: 10),
         child: ListView.builder(
           itemCount: country.length,
           itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              decoration: BoxDecoration(
-                color: Color(0xFFEBF5FB),
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFF000000).withOpacity(0.2),
-                    blurRadius: 5.0,
-                    spreadRadius: 1.0,
-                    offset: Offset(
-                      4.0,
-                      4.0,
-                    ),
-                  )
-                ],
-              ),
-              child: ListTile(
-                leading: Text(
-                  codeToCountryEmoji(country[index]['code']),
-                  style: TextStyle(fontSize: 20),
+            return GestureDetector(
+              onTap: () {
+                Map<String, String> _countryData = {
+                  "name": country[index]['name'],
+                  "code": country[index]['p_code'],
+                };
+                Navigator.of(context).pop(_countryData);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEBF5FB),
+                  border: Border.all(width: 1, color: Colors.transparent),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF000000).withOpacity(0.2),
+                      blurRadius: 5.0,
+                      spreadRadius: 1.0,
+                      offset: Offset(
+                        4.0,
+                        4.0,
+                      ),
+                    )
+                  ],
                 ),
-                title: Text(country[index]['name']),
-                subtitle: Text(country[index]['code']),
-                trailing: Text(country[index]['p_code']),
+                child: ListTile(
+                  leading: Text(
+                    codeToCountryEmoji(country[index]['code']),
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  title: Text(country[index]['name']),
+                  subtitle: Text(country[index]['code']),
+                  trailing: Text(country[index]['p_code']),
+                ),
               ),
             );
           },

@@ -1,3 +1,4 @@
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/screens/Authentication/Authentication.dart';
 import 'package:connection/screens/HomeView.dart';
 import 'package:connection/widgets/widget.dart';
@@ -19,16 +20,22 @@ class MyApp extends StatelessWidget {
       title: "Connection",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
+        // primarySwatch: MaterialColor(
+        //   0xFF399c7d,
+        //   <int, Color>{
+        //     100: ColorPalette['swatch_4'],
+        //   },
+        // ),
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapsort) {
-          // if (userSnapsort.hasData) {
-          //   return HomeView();
-          // } else {
-          return Authentication();
-          // }
+          if (userSnapsort.hasData) {
+            return HomeView();
+          } else {
+            return Authentication();
+          }
         },
       ),
     );
