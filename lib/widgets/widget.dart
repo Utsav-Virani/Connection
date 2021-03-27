@@ -1,16 +1,19 @@
 import 'package:connection/config/auth.dart';
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/screens/Authentication/Authentication.dart';
-import 'package:connection/screens/SignInScreen.dart';
-import 'package:connection/screens/SignUpScreen.dart';
+import 'package:connection/screens/Authentication/Credentials.dart';
+import 'package:connection/screens/HomeView.dart';
+import 'package:connection/screens/WelcomeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Widget appBar(BuildContext context) {
   return AppBar(
     // backgroundColor: Colors.amber,
-    backgroundColor: Color(0xff1E90FF),
+    backgroundColor: ColorPalette['swatch_20'],
     title: Center(
       child: Image(
-        image: new AssetImage("lib/assets/connection_text.png"),
+        image: new AssetImage("lib/assets/app_logo_text.png"),
         // fit: BoxFit.cover,
         height: 200,
       ),
@@ -21,7 +24,7 @@ Widget appBar(BuildContext context) {
         onTap: () {
           AuthMethods().signOut();
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => Authentication()));
+              MaterialPageRoute(builder: (context) => WelcomeScreen()));
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -54,26 +57,19 @@ Widget SearchScreenAppBar(BuildContext context) {
   );
 }
 
-class Authenticate extends StatefulWidget {
+class UserCredentialsCheck extends StatefulWidget {
   @override
-  _AuthenticateState createState() => _AuthenticateState();
+  _UserCredentialsCheckState createState() => _UserCredentialsCheckState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
-  bool showSignIn = true;
-
-  void toggleView() {
-    setState(() {
-      showSignIn = !showSignIn;
-    });
-  }
-
+class _UserCredentialsCheckState extends State<UserCredentialsCheck> {
+  bool showSignIn = FirebaseAuth.instance.currentUser.displayName.isEmpty;
   @override
   Widget build(BuildContext context) {
     if (showSignIn) {
-      return SignIn(toggleView);
+      return Credentials();
     } else {
-      return SignUp(toggleView);
+      return HomeView();
     }
   }
 }

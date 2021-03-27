@@ -38,6 +38,12 @@ class _CredentialsState extends State<Credentials> {
       databaseMethods.uploadUserInfo(
           userData, FirebaseAuth.instance.currentUser.uid);
 
+      await FirebaseAuth.instance.currentUser.updateProfile(
+        displayName: _userNameController.text,
+      );
+      await FirebaseAuth.instance.currentUser
+          .updateEmail(_emailController.text);
+
       DataStorage.setUserSignInPreference(true);
       DataStorage.setUserEmailPreference(_emailController.text);
       DataStorage.setUserNamePreference(_userNameController.text);
@@ -62,7 +68,22 @@ class _CredentialsState extends State<Credentials> {
   }
 
   @override
+  void initState() {
+    _getUserData();
+    super.initState();
+  }
+
+  _getUserData() async {
+    if (FirebaseAuth.instance.currentUser.email != null ||
+        FirebaseAuth.instance.currentUser.displayName != null) {
+      _emailController.text = FirebaseAuth.instance.currentUser.email;
+      _userNameController.text = FirebaseAuth.instance.currentUser.displayName;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(FirebaseAuth.instance.currentUser.email);
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -4,6 +4,7 @@ import 'package:connection/data/dataCollection.dart';
 import 'package:connection/data/userData.dart';
 import 'package:connection/screens/ChatRoom.dart';
 import 'package:connection/widgets/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
@@ -35,6 +36,7 @@ class _SearchState extends State<Search> {
               return SearchResultCard(
                 name: searchResult.docs[index].data()["name"],
                 email: searchResult.docs[index].data()["email"],
+                id: searchResult.docs[index].id,
               );
             })
         : Container();
@@ -48,14 +50,15 @@ class _SearchState extends State<Search> {
     }
   }
 
-  createChatRoomForUser({String userName}) {
+  createChatRoomForUser({String userId}) {
     // print("-----");
     // print(userName);
     // print(_myUserName);
 
-    if (userName != _myUserName) {
-      String _charRoomId = getChatRoomId(userName, _myUserName);
-      List<String> users = [userName, _myUserName];
+    if (userId != FirebaseAuth.instance.currentUser.displayName) {
+      String _charRoomId =
+          getChatRoomId(userId, FirebaseAuth.instance.currentUser.uid);
+      List<String> users = [userId, FirebaseAuth.instance.currentUser.uid];
       Map<String, dynamic> _chatRoomMap = {
         "users": users,
         "chatRoomId": _charRoomId
@@ -86,7 +89,7 @@ class _SearchState extends State<Search> {
     setState(() {});
   }
 
-  Widget SearchResultCard({String name, final String email}) {
+  Widget SearchResultCard({String name, final String email, final String id}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Container(
@@ -126,7 +129,7 @@ class _SearchState extends State<Search> {
             child: GestureDetector(
               onTap: () {
                 // print(name);
-                createChatRoomForUser(userName: name);
+                createChatRoomForUser(userId: id);
               },
               child: Container(
                 decoration: BoxDecoration(

@@ -159,7 +159,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   margin: const EdgeInsets.all(20.0),
                   padding: const EdgeInsets.all(20.0),
                   child: PinPut(
-                    fieldsCount: 5,
+                    fieldsCount: 6,
                     onSubmit: (pin) async {
                       try {
                         FirebaseAuth auth = FirebaseAuth.instance;

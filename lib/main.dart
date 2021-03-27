@@ -1,5 +1,6 @@
 import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/screens/Authentication/Authentication.dart';
+import 'package:connection/screens/Authentication/Credentials.dart';
 import 'package:connection/screens/HomeView.dart';
 import 'package:connection/screens/WelcomeScreen.dart';
 import 'package:connection/widgets/widget.dart';
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
+        fontFamily: 'ScopeOne',
+        primaryColor: ColorPalette['swatch_20'],
         // primarySwatch: MaterialColor(
         //   0xFF399c7d,
         //   <int, Color>{

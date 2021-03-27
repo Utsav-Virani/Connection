@@ -1,8 +1,10 @@
 import 'package:connection/config/database.dart';
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/data/dataCollection.dart';
 import 'package:connection/data/userData.dart';
 import 'package:connection/screens/ChatRoom.dart';
 import 'package:connection/widgets/widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:connection/screens/SearchScreen.dart';
 
@@ -22,7 +24,10 @@ class _HomeViewState extends State<HomeView> {
     getUserInfo();
     // print("asd");
     // print(_myUserName);
-    _dataBaseMethods.getChatRooms(_myUserName).then((value) {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    _dataBaseMethods.getChatRooms(_auth.currentUser.uid).then((value) {
+      print("---");
+      print(value);
       setState(() {
         _availableChatRoomsStream = value;
       });
@@ -49,7 +54,8 @@ class _HomeViewState extends State<HomeView> {
                           .data()["chatRoomId"]
                           .toString()
                           .replaceAll("_", "")
-                          .replaceAll(_myUserName, ""),
+                          .replaceAll(
+                              FirebaseAuth.instance.currentUser.uid, ""),
                       snapshot.data.docs[index].data()["chatRoomId"]);
                 },
               )
@@ -73,9 +79,10 @@ class _HomeViewState extends State<HomeView> {
       drawer: Drawer(
         child: Center(child: Text(_myUserName)),
       ),
-      backgroundColor: Color(0xff1E90FF),
+      backgroundColor: ColorPalette['swatch_20'],
       appBar: appBar(context),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: ColorPalette['swatch_20'],
         child: Icon(
           Icons.add_rounded,
           size: 28,
@@ -94,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
               topLeft: Radius.circular(50),
               topRight: Radius.circular(50),
             ),
-            color: Color(0xff1E90FF),
+            color: ColorPalette['swatch_20'],
           ),
         ),
         Expanded(

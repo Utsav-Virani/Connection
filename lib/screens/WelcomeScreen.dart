@@ -45,7 +45,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   Text(
                     "This way to SignIn",
                     style: TextStyle(
-                      color: ColorPalette['swatch_9'],
+                      color: ColorPalette['swatch_15'],
                       fontSize: 25,
                       fontWeight: FontWeight.w600,
                     ),
@@ -55,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    color: ColorPalette['swatch_9'],
+                    color: ColorPalette['swatch_15'],
                     size: 40,
                   )
                 ],
