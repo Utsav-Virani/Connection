@@ -2,6 +2,7 @@ import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/modal/CountrySelecter.dart';
 import 'package:connection/screens/Authentication/OTPScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Authentication extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class Authentication extends StatefulWidget {
 }
 
 class _AuthenticationState extends State<Authentication> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _countryNameController =
       new TextEditingController(text: "India");
   TextEditingController _phoneNumberController = new TextEditingController();
@@ -26,18 +28,36 @@ class _AuthenticationState extends State<Authentication> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            "OTP Verification",
+            style: TextStyle(
+              fontSize: 25,
+            ),
+          ),
+        ),
+        backgroundColor: ColorPalette['swatch_20'],
+        elevation: 0,
+      ),
+      backgroundColor: ColorPalette['swatch_20'],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         // mainAxisSize: MainAxisSize.max,
         children: [
-          // Center(
-          //   child: Image(
-          //     image: new AssetImage("lib/assets/logo_trans.png"),
-          //     fit: BoxFit.cover,
-          //     height: MediaQuery.of(context).size.width * 0.7,
-          //   ),
-          // ),
+          Container(
+            height: MediaQuery.of(context).size.width * 0.25,
+            child: Center(
+              child: Text(
+                "We'll send you an OTP.",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: ColorPalette['swatch_1'],
+                ),
+              ),
+            ),
+          ),
           Container(
             // color: Colors.amber,
             height: MediaQuery.of(context).size.height * 0.39,
@@ -46,6 +66,7 @@ class _AuthenticationState extends State<Authentication> {
               // color: Colors.cyan,
               decoration: BoxDecoration(
                 color: Colors.white,
+                // color: ColorPalette['swatch_20'],
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50),
                   topRight: Radius.circular(50),
@@ -53,7 +74,7 @@ class _AuthenticationState extends State<Authentication> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF000000).withOpacity(0.17),
+                    color: Color(0xFF000000).withOpacity(0.2),
                     blurRadius: 6.0,
                     spreadRadius: 3.0,
                     offset: Offset(
@@ -62,10 +83,6 @@ class _AuthenticationState extends State<Authentication> {
                     ),
                   ),
                 ],
-                border: Border.all(
-                  width: 3,
-                  color: Colors.black45,
-                ),
               ),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
@@ -115,15 +132,28 @@ class _AuthenticationState extends State<Authentication> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
-                            child: TextFormField(
-                              controller: _phoneNumberController,
-                              decoration: InputDecoration(
-                                hintText: "Mobile Number",
-                                hintStyle:
-                                    TextStyle(color: ColorPalette['swatch_15']),
-                                focusColor: ColorPalette['swatch_15'],
-                                hoverColor: ColorPalette['swatch_15'],
-                                fillColor: ColorPalette['swatch_15'],
+                            child: Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                controller: _phoneNumberController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                validator: (mobilenum) {
+                                  return RegExp(r"^[6-9]\d{9}$")
+                                          .hasMatch(mobilenum)
+                                      ? null
+                                      : "Invalid Mobile Number";
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Mobile Number",
+                                  hintStyle: TextStyle(
+                                      color: ColorPalette['swatch_15']),
+                                  focusColor: ColorPalette['swatch_15'],
+                                  hoverColor: ColorPalette['swatch_15'],
+                                  fillColor: ColorPalette['swatch_15'],
+                                ),
                               ),
                             ),
                           ),
@@ -142,13 +172,15 @@ class _AuthenticationState extends State<Authentication> {
                       alignment: Alignment.bottomCenter,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OtpScreen(
-                                    _phoneCodeController.text +
-                                        _phoneNumberController.text)),
-                          );
+                          if (_formKey.currentState.validate()) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OtpScreen(
+                                      _phoneCodeController.text +
+                                          _phoneNumberController.text)),
+                            );
+                          }
                         },
                         child: Container(
                           child: Text(

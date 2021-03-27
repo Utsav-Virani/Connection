@@ -11,7 +11,7 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
-String _myUserName = "utsav";
+String _myUserName = "";
 Stream _availableChatRoomsStream;
 
 class _HomeViewState extends State<HomeView> {
@@ -21,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     getUserInfo();
     // print("asd");
-    print(_myUserName);
+    // print(_myUserName);
     _dataBaseMethods.getChatRooms(_myUserName).then((value) {
       setState(() {
         _availableChatRoomsStream = value;
@@ -62,8 +62,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getUserInfo() async {
-    // _myUserName = await DataStorage.getUserNamePreference();
-    _myUserName = "utsav";
+    _myUserName = await DataStorage.getUserNamePreference();
+    // _myUserName = "utsav";
     setState(() {});
   }
 

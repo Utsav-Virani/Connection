@@ -21,4 +21,5 @@ Map<String, Color> ColorPalette = {
   "swatch_17": Color(0xFF4d4253),
   "swatch_18": Color(0xFF75719d),
   "swatch_19": Color(0xFFf52416),
+  "swatch_20": Color(0xFFE59444),
 };

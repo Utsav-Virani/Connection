@@ -1,6 +1,7 @@
 import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/screens/Authentication/Authentication.dart';
 import 'package:connection/screens/HomeView.dart';
+import 'package:connection/screens/WelcomeScreen.dart';
 import 'package:connection/widgets/widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           if (userSnapsort.hasData) {
             return HomeView();
           } else {
-            return Authentication();
+            return WelcomeScreen();
           }
         },
       ),
