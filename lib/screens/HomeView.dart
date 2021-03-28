@@ -45,9 +45,8 @@ class _HomeViewState extends State<HomeView> {
         .doc(userId)
         .get()
         .then((value) {
-      setState(() {
-        _userName = value.data()['name'];
-      });
+      _userName = value.data()['name'];
+      setState(() {});
     });
   }
 
@@ -56,30 +55,44 @@ class _HomeViewState extends State<HomeView> {
       stream: _availableChatRoomsStream,
       builder: (context, snapshot) {
         return snapshot.hasData
-            ? ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (context, index) {
-                  // print(snapshot.data.docs[index]
-                  //     .data()["chatRoomId"]
-                  //     .toString()
-                  //     .replaceAll("_", ""));
-                  // print("----> " + _myUserName);
-                  var _userName = _getUserName(snapshot.data.docs[index]
-                      .data()["chatRoomId"]
-                      .toString()
-                      .replaceAll("_", "")
-                      .replaceAll(FirebaseAuth.instance.currentUser.uid, ""));
-                  // print(_userName);
-                  return ChatRoomListTile(
-                      snapshot.data.docs[index]
+            ? snapshot != null
+                ? ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      // print(snapshot.data.docs[index]
+                      //     .data()["chatRoomId"]
+                      //     .toString()
+                      //     .replaceAll("_", ""));
+                      // print("----> " + _myUserName);
+                      // print(snapshot.data.docs[index]
+                      //     .data()["chatRoomId"]
+                      //     .toString()
+                      //     .replaceAll("_", "")
+                      //     .replaceAll(FirebaseAuth.instance.currentUser.uid, ""));
+                      _getUserName(snapshot.data.docs[index]
                           .data()["chatRoomId"]
                           .toString()
                           .replaceAll("_", "")
                           .replaceAll(
-                              FirebaseAuth.instance.currentUser.uid, ""),
-                      snapshot.data.docs[index].data()["chatRoomId"]);
-                },
-              )
+                              FirebaseAuth.instance.currentUser.uid, ""));
+                      // print(_userName);
+                      return _userName != null
+                          ? ChatRoomListTile(
+                              _userName,
+                              // snapshot.data.docs[index]
+                              //     .data()["chatRoomId"]
+                              //     .toString()
+                              //     .replaceAll("_", "")
+                              //     .replaceAll(
+                              //         FirebaseAuth.instance.currentUser.uid, ""),
+                              snapshot.data.docs[index].data()["chatRoomId"])
+                          : Container();
+                    },
+                  )
+                : Container(
+                    width: double.infinity,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
             : Container(
                 width: double.infinity,
                 child: Center(child: CircularProgressIndicator()),
@@ -156,82 +169,96 @@ class ChatRoomListTile extends StatelessWidget {
   ChatRoomListTile(this._userName, this._chatRoomId);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChatRoomScreen(
-                      chatRoomId: _chatRoomId,
-                    )));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 80,
+    // print(_chatRoomId);
+    // print(_userName);
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(
+                        chatRoomId: _chatRoomId,
+                      )));
+        },
         child: Container(
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xFF000000).withOpacity(0.1),
-                blurRadius: 5.0,
-                spreadRadius: 1.0,
-                offset: Offset(
-                  4.0,
-                  4.0,
+          width: MediaQuery.of(context).size.width,
+          height: 80,
+          child: Container(
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFF000000).withOpacity(0.1),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(
+                    4.0,
+                    4.0,
+                  ),
+                ),
+              ],
+              gradient: LinearGradient(colors: [
+                // Color(0xFFE3F2FD),
+                // Color(0xFFccdae4),
+                ColorPalette['swatch_24'],
+                ColorPalette['swatch_23'],
+              ]),
+            ),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: ColorPalette['swatch_25'],
+                child: Text(
+                  _userName[0].toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                maxRadius: 26,
+              ),
+              title: Text(
+                _userName,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ],
-            gradient: LinearGradient(colors: [
-              Color(0xFFE3F2FD),
-              Color(0xFFccdae4),
-            ]),
-          ),
-          child: ListTile(
-            leading: CircleAvatar(
-              child: Text(
-                _userName[0],
-                style: TextStyle(fontSize: 24),
-              ),
-              maxRadius: 26,
-            ),
-            title: Text(
-              _userName,
-              style: TextStyle(fontSize: 18),
             ),
           ),
+          // alignment: _isSendBAlignment.centerRight : Alignment.centerLeft,
+          // child: Container(
+          //   alignment: Alignment.centerLeft,
+          //   margin: EdgeInsets.symmetric(vertical: 5, horizontal: 6),
+          //   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 13),
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.all(Radius.circular(40)),
+          //     boxShadow: [
+          //       BoxShadow(
+          //         color: Color(0xFF000000).withOpacity(0.1),
+          //         blurRadius: 5.0,
+          //         spreadRadius: 1.0,
+          //         offset: Offset(
+          //           4.0,
+          //           4.0,
+          //         ),
+          //       ),
+          //     ],
+          //     gradient: LinearGradient(colors: [
+          //       Color(0xFFE3F2FD),
+          //       Color(0xFFccdae4),
+          //     ]),
+          //   ),
+          //   child: Container(
+          //     child: Text(
+          //       _userName,
+          //       style: TextStyle(fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         ),
-        // alignment: _isSendBAlignment.centerRight : Alignment.centerLeft,
-        // child: Container(
-        //   alignment: Alignment.centerLeft,
-        //   margin: EdgeInsets.symmetric(vertical: 5, horizontal: 6),
-        //   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 13),
-        //   decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.all(Radius.circular(40)),
-        //     boxShadow: [
-        //       BoxShadow(
-        //         color: Color(0xFF000000).withOpacity(0.1),
-        //         blurRadius: 5.0,
-        //         spreadRadius: 1.0,
-        //         offset: Offset(
-        //           4.0,
-        //           4.0,
-        //         ),
-        //       ),
-        //     ],
-        //     gradient: LinearGradient(colors: [
-        //       Color(0xFFE3F2FD),
-        //       Color(0xFFccdae4),
-        //     ]),
-        //   ),
-        //   child: Container(
-        //     child: Text(
-        //       _userName,
-        //       style: TextStyle(fontSize: 16),
-        //     ),
-        //   ),
-        // ),
       ),
     );
   }

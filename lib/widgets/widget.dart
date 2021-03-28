@@ -37,10 +37,10 @@ Widget appBar(BuildContext context) {
 Widget SearchScreenAppBar(BuildContext context) {
   return AppBar(
     // backgroundColor: Colors.amber,
-    backgroundColor: Color(0xff1E90FF),
+    backgroundColor: ColorPalette['swatch_20'],
     title: Center(
       child: Image(
-        image: new AssetImage("lib/assets/connection_text.png"),
+        image: new AssetImage("lib/assets/app_logo_text.png"),
         // fit: BoxFit.cover,
         height: 200,
       ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/database.dart';
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/data/dataCollection.dart';
 import 'package:connection/data/userData.dart';
 import 'package:connection/screens/ChatRoom.dart';
@@ -54,8 +55,9 @@ class _SearchState extends State<Search> {
     // print("-----");
     // print(userName);
     // print(_myUserName);
+    // print(userId);
 
-    if (userId != FirebaseAuth.instance.currentUser.displayName) {
+    if (userId != FirebaseAuth.instance.currentUser.uid) {
       String _charRoomId =
           getChatRoomId(userId, FirebaseAuth.instance.currentUser.uid);
       List<String> users = [userId, FirebaseAuth.instance.currentUser.uid];
@@ -97,7 +99,7 @@ class _SearchState extends State<Search> {
         height: 80,
         // color: Color(0xFFD6EAF8),
         decoration: BoxDecoration(
-          color: Color(0xFFEBF5FB),
+          color: ColorPalette['swatch_24'],
           boxShadow: [
             BoxShadow(
               color: Color(0xFF000000).withOpacity(0.1),
@@ -120,7 +122,14 @@ class _SearchState extends State<Search> {
         child: ListTile(
           title: Text(name),
           leading: CircleAvatar(
-            child: Text(name[0]),
+            child: Text(
+              name[0],
+              style: TextStyle(
+                fontSize: 22,
+                color: ColorPalette['swatch_25'],
+              ),
+            ),
+            backgroundColor: ColorPalette['swatch_9'],
             maxRadius: 24,
           ),
           subtitle: Text(email),
@@ -133,22 +142,27 @@ class _SearchState extends State<Search> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFCCBC),
+                  color: ColorPalette['swatch_25'],
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0xFF000000).withOpacity(0.1),
-                      blurRadius: 5.0,
+                      color: Color(0xFF000000).withOpacity(0.2),
+                      blurRadius: 4.0,
                       spreadRadius: 0.5,
                       offset: Offset(
-                        4.0,
-                        4.0,
+                        3.0,
+                        3.0,
                       ),
                     ),
                   ],
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text("Message"),
+                child: Text(
+                  "Message",
+                  style: TextStyle(
+                    color: ColorPalette['swatch_1'],
+                  ),
+                ),
               ),
             ),
           ),
@@ -161,7 +175,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchScreenAppBar(context),
-      backgroundColor: Color(0xff1E90FF),
+      backgroundColor: ColorPalette['swatch_20'],
       body: Container(
         // color: Colors.white,
         child: Column(
@@ -174,7 +188,7 @@ class _SearchState extends State<Search> {
                   topLeft: Radius.circular(50),
                   topRight: Radius.circular(50),
                 ),
-                color: Color(0xff1E90FF),
+                color: ColorPalette['swatch_20'],
               ),
             ),
             Container(
