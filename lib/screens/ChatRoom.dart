@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/database.dart';
+import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/data/userData.dart';
 import 'package:flutter/material.dart';
 
@@ -74,7 +75,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff1E90FF),
+        backgroundColor: ColorPalette['swatch_20'],
         elevation: 0,
       ),
       body: Container(
@@ -90,17 +91,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               margin: EdgeInsets.only(bottom: 5),
               child: Container(
                 height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: Color(0xFFE3F2FD),
-                    // color: Color(0xFFEBF5FB),
-                    border: Border(
-                        // top: BorderSide(width: 2, color: Colors.grey),
-                        )),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: ColorPalette['swatch_20'].withOpacity(.3),
+                          // color: Color(0xFFEBF5FB),
+                          border: Border(
+                              // top: BorderSide(width: 2, color: Colors.grey),
+                              )),
+                      padding: EdgeInsets.only(left: 10),
                       child: TextFormField(
                         textCapitalization: TextCapitalization.sentences,
                         decoration: InputDecoration(
@@ -136,6 +140,18 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                         //       Border.all(width: 1, color: Color(0xFFcadee1)),
                         //   borderRadius: BorderRadius.all(Radius.circular(50)),
                         // ),
+                        // alignment: Alignment.center,
+
+                        // width: MediaQuery.of(context).size.width * 0.8,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: ColorPalette['swatch_20'].withOpacity(.3),
+                            // color: Color(0xFFEBF5FB),
+                            border: Border(
+                                // top: BorderSide(width: 2, color: Colors.grey),
+                                )),
+                        padding: EdgeInsets.all(12),
+                        // margin: EdgeInsets.only(5),
                         child: Image.asset(
                           "lib/assets/msgSentLogo.png",
                           height: 25,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connection/config/database.dart';
 import 'package:connection/data/Colors/colorpanel.dart';
 import 'package:connection/data/dataCollection.dart';
@@ -19,6 +20,8 @@ Stream _availableChatRoomsStream;
 class _HomeViewState extends State<HomeView> {
   DataBaseMethods _dataBaseMethods = new DataBaseMethods();
 
+  String _userName;
+
   @override
   void initState() {
     getUserInfo();
@@ -36,6 +39,18 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
+  _getUserName(userId) async {
+    FirebaseFirestore.instance
+        .collection("UserData")
+        .doc(userId)
+        .get()
+        .then((value) {
+      setState(() {
+        _userName = value.data()['name'];
+      });
+    });
+  }
+
   Widget ChatRoomList() {
     return StreamBuilder(
       stream: _availableChatRoomsStream,
@@ -49,6 +64,12 @@ class _HomeViewState extends State<HomeView> {
                   //     .toString()
                   //     .replaceAll("_", ""));
                   // print("----> " + _myUserName);
+                  var _userName = _getUserName(snapshot.data.docs[index]
+                      .data()["chatRoomId"]
+                      .toString()
+                      .replaceAll("_", "")
+                      .replaceAll(FirebaseAuth.instance.currentUser.uid, ""));
+                  // print(_userName);
                   return ChatRoomListTile(
                       snapshot.data.docs[index]
                           .data()["chatRoomId"]

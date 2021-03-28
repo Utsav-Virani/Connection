@@ -164,20 +164,34 @@ class _OtpScreenState extends State<OtpScreen> {
                       try {
                         FirebaseAuth auth = FirebaseAuth.instance;
 
-                        ConfirmationResult confirmationResult =
-                            await auth.signInWithPhoneNumber(
-                                widget.phoneNumber,
-                                RecaptchaVerifier(
-                                  container: 'recaptcha',
-                                  size: RecaptchaVerifierSize.compact,
-                                  theme: RecaptchaVerifierTheme.dark,
-                                ));
-                        UserCredential userCredential =
-                            await confirmationResult.confirm(pin);
+                        // ConfirmationResult confirmationResult =
+                        //     await auth.signInWithPhoneNumber(
+                        //         widget.phoneNumber,
+                        //         RecaptchaVerifier(
+                        //           container: 'recaptcha',
+                        //           size: RecaptchaVerifierSize.compact,
+                        //           theme: RecaptchaVerifierTheme.dark,
+                        //         ));
+                        // UserCredential userCredential =
+                        //     await confirmationResult.confirm(pin);
 
-                        // await FirebaseAuth.instance.signInWithCredential(
-                        //     PhoneAuthProvider.credential(
-                        //         verificationId: verificationCode, smsCode: pin),RecaptchaVerifier());
+                        await FirebaseAuth.instance
+                            .signInWithCredential(
+                          PhoneAuthProvider.credential(
+                            verificationId: verificationCode,
+                            smsCode: pin,
+                          ),
+                        )
+                            .then((value) {
+                          if (value != null) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Credentials(),
+                              ),
+                            );
+                          }
+                        });
                       } catch (e) {
                         FocusScope.of(context).unfocus();
                         ScaffoldMessenger.of(context).showSnackBar(
