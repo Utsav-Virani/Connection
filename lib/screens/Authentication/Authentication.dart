@@ -33,14 +33,16 @@ class _AuthenticationState extends State<Authentication> {
           child: Text(
             "OTP Verification",
             style: TextStyle(
-              fontSize: 25,
+              fontSize: 30,
+              color: ColorPalette['swatch_25'],
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        backgroundColor: ColorPalette['swatch_20'],
-        elevation: 0,
+        backgroundColor: ColorPalette['swatch_1'],
+        elevation: 2,
       ),
-      backgroundColor: ColorPalette['swatch_20'],
+      backgroundColor: ColorPalette['swatch_1'],
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,7 +55,7 @@ class _AuthenticationState extends State<Authentication> {
                 "We'll send you an OTP.",
                 style: TextStyle(
                   fontSize: 20,
-                  color: ColorPalette['swatch_1'],
+                  color: ColorPalette['swatch_25'],
                 ),
               ),
             ),
@@ -164,7 +166,7 @@ class _AuthenticationState extends State<Authentication> {
                       width: 160,
                       padding: EdgeInsets.symmetric(vertical: 14),
                       decoration: BoxDecoration(
-                        color: ColorPalette['swatch_6'],
+                        color: ColorPalette['swatch_20'],
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),

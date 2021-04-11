@@ -12,7 +12,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalette['swatch_20'],
+      // backgroundColor: ColorPalette['swatch_20'],
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
               child: SvgPicture.asset(
-                'lib/assets/Connection.svg',
+                'lib/assets/Connection_blue.svg',
                 width: MediaQuery.of(context).size.width * 0.6,
               ),
             ),

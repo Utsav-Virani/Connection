@@ -203,8 +203,8 @@ class ChatRoomListTile extends StatelessWidget {
               gradient: LinearGradient(colors: [
                 // Color(0xFFE3F2FD),
                 // Color(0xFFccdae4),
-                ColorPalette['swatch_24'],
-                ColorPalette['swatch_23'],
+                ColorPalette['swatch_7'],
+                ColorPalette['swatch_7'],
               ]),
             ),
             child: ListTile(

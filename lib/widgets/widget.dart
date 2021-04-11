@@ -6,17 +6,17 @@ import 'package:connection/screens/HomeView.dart';
 import 'package:connection/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 Widget appBar(BuildContext context) {
   return AppBar(
     // backgroundColor: Colors.amber,
     backgroundColor: ColorPalette['swatch_20'],
     title: Center(
-      child: Image(
-        image: new AssetImage("lib/assets/app_logo_text.png"),
-        // fit: BoxFit.cover,
-        height: 200,
-      ),
+      child: SvgPicture.asset(
+                'lib/assets/app_logo_text_blue.svg',
+                width: MediaQuery.of(context).size.width * 0.6,
+              ),
     ),
     elevation: 0.0,
     actions: [

@@ -82,16 +82,18 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: TextStyle(color: ColorPalette['swatch_25']),
         title: Text(
           "Enter Verification Code",
           style: TextStyle(
             fontSize: 25,
+            color: ColorPalette['swatch_25'],
           ),
         ),
-        elevation: 0,
-        backgroundColor: ColorPalette['swatch_20'],
+        elevation: 2,
+        backgroundColor: ColorPalette['swatch_1'],
       ),
-      backgroundColor: ColorPalette['swatch_20'],
+      backgroundColor: ColorPalette['swatch_1'],
       key: _scaffoldKey,
       body: Center(
         child: Container(
